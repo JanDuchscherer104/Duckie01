@@ -12,11 +12,6 @@ class MyPublisherNode(DTROS):
     _PUB_RATE = 1
 
     def __init__(self, node_name: str) -> None:
-        """Initialize the MyPublisherNode.
-
-        Args:
-            node_name (str): Name of the node.
-        """
         # initialize the DTROS parent class
         super(MyPublisherNode, self).__init__(
             node_name=node_name, node_type=NodeType.GENERIC
@@ -35,13 +30,10 @@ class MyPublisherNode(DTROS):
             rospy.Duration.from_sec(self._PUB_RATE), self.pub_message
         )
 
-    def pub_message(self, event: Any) -> None:
-        """Publish a message at a regular interval.
+        rospy.loginfo(f"Publisher {node_name} has started quacking!")
 
-        Args:
-            event (Any): Timer event information (not used, but required by rospy.Timer).
-        """
-        message = f"Hello from {self._vehicle_name}!"
+    def pub_message(self, event: Any) -> None:
+        message = f"Quack quack from {self._vehicle_name}!"
         rospy.loginfo(f"Publishing message: '{message}'")
         self._publisher.publish(message)
 

@@ -53,14 +53,16 @@ class CameraReaderNode(DTROS):
         image = self._bridge.compressed_imgmsg_to_cv2(msg, desired_encoding="bgr8")
 
         # Convert the image to a gray-scale image
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        gray_filtered = cv2.GaussianBlur(
+            cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), ksize=(5, 5), sigmaX=0
+        )
 
         # Convert the gray-scale image into a Canny (edge detector)
-        canny = cv2.Canny(gray, threshold1=100, threshold2=200)
+        canny = cv2.Canny(gray_filtered, threshold1=100, threshold2=200)
 
         # Show the different views as an output
         cv2.imshow(self._window, image)
-        cv2.imshow(self._gray_window, gray)
+        cv2.imshow(self._gray_window, gray_filtered)
         cv2.imshow(self._canny_window, canny)
 
         cv2.waitKey(1)
